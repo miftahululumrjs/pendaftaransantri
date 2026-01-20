@@ -3,51 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Saya</title>
+    <title>Pendaftaran Santri 2026 - Pondok Pesantren Miftahul Ulum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS untuk mempercantik tampilan */
+        :root {
+            --primary-color: #075E54; 
+            --secondary-color: #25D366; 
+            --bg-light: #f4f7f6;
+            --text-dark: #333;
+            --border-color: #e0e0e0;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            color: #333;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
         }
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+        /* Header dengan Background Image */
+        .header-image {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            background-color: #d1d5db; /* Menyesuaikan warna abu-abu pada header Anda */
+            width: 100%;
+            padding: 0;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
         }
-        h1 { margin-bottom: 0.5rem; color: #4a148c; }
-        p { color: #666; line-height: 1.6; }
-        .btn {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 10px 20px;
-            background-color: #764ba2;
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: 0.3s;
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto 40px;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-        .btn:hover { background-color: #5a3682; transform: translateY(-2px); }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        label { font-weight: 600; display: block; margin-top: 20px; font-size: 0.9em; }
+
+        input, select, textarea {
+            width: 100%; padding: 14px; margin-top: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px; box-sizing: border-box;
+            background-color: #fafafa;
+        }
+
+        input:focus { border-color: var(--secondary-color); outline: none; background-color: #fff; }
+
+        #preview-container {
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+            border: 2px dashed var(--border-color);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%; background-color: var(--secondary-color);
+            color: white; border: none; padding: 18px;
+            border-radius: 10px; font-size: 1.1em; font-weight: 700;
+            cursor: pointer; margin-top: 30px; transition: 0.3s;
+        }
+
+        button:hover { background-color: #128C7E; transform: translateY(-2px); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        .footer { text-align: center; padding: 40px; font-size: 0.9em; color: #888; }
+        .footer a { color: #555; text-decoration: none; font-weight: 600; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        @media (max-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .container { padding: 20px; margin: 15px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Halo, Saya [Nama Kamu]! 👋</h1>
-        <p>Selamat datang di website pertama saya yang dihosting melalui <strong>GitHub Pages</strong>.</p>
-        <p>Saya sedang belajar web development dan ini adalah langkah awal saya.</p>
-        <a href="https://github.com" class="btn">Lihat Profil GitHub</a>
+    <div class="header-container">
+        <img src="header-mu.jpg" alt="Header Miftahul Ulum" class="header-image">
     </div>
 
+    <div class="container">
+        <h2 class="section-title">Formulir Pendaftaran Santri 2026</h2>
+
+        <form id="pendaftaranForm">
+            <label>Nama Lengkap Calon Santri:</label>
+            <input type="text" id="nama" placeholder="Sesuai Akta Kelahiran" required>
+
+            <label>Jenis Kelamin:</label>
+            <select id="jk" required>
+                <option value="">-- Pilih --</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+
+            <div class="grid-2">
+                <div>
+                    <label>NISN:</label>
+                    <input type="number" id="nisn" placeholder="10 Digit" required>
+                </div>
+                <div>
+                    <label>NIK:</label>
+                    <input type="number" id="nik" placeholder="16 Digit" required>
+                </div>
+            </div>
+
+            <label>Nomor Kartu Keluarga (KK):</label>
+            <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
+
+            <label>Sekolah Asal:</label>
+            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI Sebelumnya" required>
+
+            <label>Nomor HP Orang Tua (WhatsApp):</label>
+            <input type="number" id="hp_ortu" placeholder="Contoh: 08123456789" required>
+
+            <label>Upload Foto Calon Santri (Terbaru):</label>
+            <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
+            
+            <div id="preview-container">
+                <p style="font-size: 0.8em; color: #666;">Preview Foto:</p>
+                <img id="image-preview" src="" alt="Preview">
+            </div>
+
+            <button type="button" id="btnSubmit" onclick="kirimData()">Kirim Pendaftaran via WhatsApp</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        © 2026 <a href="https://pinggirx.com" target="_blank">pinggirX.com</a>
+    </div>
+
+    <script>
+        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
+        const URL_SCRIPT_GOOGLE = "TEMPEL_URL_SCRIPT_DI_SINI"; 
+        const adminWA = "6281234567890"; // Ganti dengan nomor WhatsApp Admin/Panitia
+
+        function previewImage() {
+            const file = document.getElementById('foto').files[0];
+            const previewContainer = document.getElementById('preview-container');
+            const previewImage = document.getElementById('image-preview');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+            if (file) { reader.readAsDataURL(file); }
+        }
+
+        async function kirimData() {
+            const btn = document.getElementById('btnSubmit');
+            const fileInput = document.getElementById('foto');
+            
+            if (!fileInput.files[0]) {
+                alert("Mohon sertakan foto calon santri!");
+                return;
+            }
+
+            // Validasi sederhana untuk NIK & KK
+            const nikValue = document.getElementById('nik').value;
+            const kkValue = document.getElementById('no_kk').value;
+            if(nikValue.length !== 16 || kkValue.length !== 16) {
+                alert("NIK dan Nomor KK harus 16 digit!");
+                return;
+            }
+
+            btn.textContent = 'Sedang Menyimpan Data...';
+            btn.disabled = true;
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function() {
+                const base64Data = reader.result.split(',')[1];
+                const formData = {
+                    nama: document.getElementById('nama').value,
+                    jk: document.getElementById('jk').value,
+                    nisn: document.getElementById('nisn').value,
+                    nik: nikValue,
+                    no_kk: kkValue,
+                    sekolah: document.getElementById('sekolah_asal').value,
+                    hp: document.getElementById('hp_ortu').value,
+                    fotoData: base64Data,
+                    fotoType: file.type,
+                    fotoName: "FOTO_SANTRI_" + document.getElementById('nama').value.replace(/\s+/g, '_')
+                };
+
+                try {
+                    // 1. Simpan ke Google Sheets & Drive
+                    await fetch(https://script.google.com/macros/s/AKfycbzT6jYF6gv8iu2n_05HuJtSWG8T3dAsOgp4_CKV-294wSe8ICmoO6NYNXMxF3nYp_dq2A/exec, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData)
+                    });
+
+                    // 2. Redirect ke WhatsApp
+                    const pesan = `*PENDAFTARAN SANTRI BARU 2026*\n*PONPES MIFTAHUL ULUM*\n\n` +
+                                  `Nama: ${formData.nama}\n` +
+                                  `NIK: ${formData.nik}\n` +
+                                  `Asal Sekolah: ${formData.sekolah}\n\n` +
+                                  `_Data pendaftaran dan foto sudah berhasil diupload ke sistem sekolah._`;
+
+                    window.open(`https://wa.me/${6285353365335}?text=${encodeURIComponent(pesan)}`, '_blank');
+                    
+                    btn.textContent = 'Kirim Pendaftaran via WhatsApp';
+                    btn.disabled = false;
+                    document.getElementById('pendaftaranForm').reset();
+                    document.getElementById('preview-container').style.display = 'none';
+                    
+                } catch (e) {
+                    alert("Terjadi kesalahan teknis. Pastikan ukuran foto tidak terlalu besar.");
+                    btn.disabled = false;
+                    btn.textContent = 'Kirim Pendaftaran via WhatsApp';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
 </body>
 </html>
