@@ -22,19 +22,23 @@
             color: var(--text-dark);
         }
 
-        .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 50px 20px;
+        .header-container {
+            background-color: #d1d5db; 
             text-align: center;
+            width: 100%;
         }
 
-        .header h1 { margin: 0; font-size: 2em; text-transform: uppercase; }
-        .header p { margin-top: 10px; opacity: 0.9; }
+        .header-image {
+            max-width: 1000px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
 
         .container {
             max-width: 700px;
-            margin: -40px auto 40px;
+            margin: 20px auto 40px;
             padding: 40px;
             background: white;
             border-radius: 15px;
@@ -48,6 +52,7 @@
             border: 1px solid var(--border-color);
             border-radius: 10px; box-sizing: border-box;
             background-color: #fafafa;
+            font-family: inherit;
         }
 
         input:focus { border-color: var(--secondary-color); outline: none; background-color: #fff; }
@@ -67,14 +72,28 @@
             border-radius: 8px;
         }
 
-        button {
-            width: 100%; background-color: var(--secondary-color);
-            color: white; border: none; padding: 18px;
-            border-radius: 10px; font-size: 1.1em; font-weight: 700;
-            cursor: pointer; margin-top: 30px; transition: 0.3s;
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
         }
 
-        button:hover { background-color: #128C7E; transform: translateY(-2px); }
+        button {
+            flex: 2;
+            background-color: var(--secondary-color);
+            color: white; border: none; padding: 18px;
+            border-radius: 10px; font-size: 1.1em; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-cancel:hover { background-color: #7f8c8d; }
         button:disabled { background-color: #ccc; cursor: not-allowed; }
 
         .footer { text-align: center; padding: 40px; font-size: 0.9em; color: #888; }
@@ -84,6 +103,8 @@
 
         @media (max-width: 600px) {
             .grid-2 { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .container { padding: 25px; margin: 15px; }
         }
     </style>
 </head>
@@ -98,7 +119,7 @@
 
         <form id="pendaftaranForm">
             <label>Nama Lengkap Calon Santri:</label>
-            <input type="text" id="nama" placeholder="Sesuai Akta" required>
+            <input type="text" id="nama" placeholder="Sesuai Ijazah SD/MI SMP/MTs" required>
 
             <label>Jenis Kelamin:</label>
             <select id="jk" required>
@@ -122,7 +143,7 @@
             <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
 
             <label>Sekolah Asal:</label>
-            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI Sebelumnya" required>
+            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI SMP/MTs Sebelumnya" required>
 
             <label>Nomor HP Orang Tua:</label>
             <input type="number" id="hp_ortu" placeholder="Contoh: 08123xxx" required>
@@ -135,7 +156,10 @@
                 <img id="image-preview" src="" alt="Preview">
             </div>
 
-            <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
+            <div class="button-group">
+                <button type="button" class="btn-cancel" onclick="resetForm()">BATAL</button>
+                <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
+            </div>
         </form>
     </div>
 
@@ -160,6 +184,14 @@
             if (file) { reader.readAsDataURL(file); }
         }
 
+        function resetForm() {
+            if(confirm("Apakah Anda yakin ingin membatalkan dan menghapus data?")) {
+                document.getElementById('pendaftaranForm').reset();
+                document.getElementById('preview-container').style.display = 'none';
+                window.scrollTo(0, 0);
+            }
+        }
+
         async function kirimData() {
             const btn = document.getElementById('btnSubmit');
             const fileInput = document.getElementById('foto');
@@ -182,12 +214,12 @@
                     jk: document.getElementById('jk').value,
                     nisn: document.getElementById('nisn').value,
                     nik: document.getElementById('nik').value,
-                    no_kk: document.getElementById('no_kk').value, // Data KK ditambahkan
+                    no_kk: document.getElementById('no_kk').value,
                     sekolah: document.getElementById('sekolah_asal').value,
                     hp: document.getElementById('hp_ortu').value,
                     fotoData: base64Data,
                     fotoType: file.type,
-                    fotoName: "Foto_" + document.getElementById('nama').value
+                    fotoName: "Foto_" + document.getElementById('nama').value.replace(/\s+/g, '_')
                 };
 
                 try {
@@ -204,8 +236,9 @@
                     btn.textContent = 'Daftar via WhatsApp';
                     btn.disabled = false;
                 } catch (e) {
-                    alert("Terjadi kesalahan. Pastikan file tidak terlalu besar.");
+                    alert("Gagal. Pastikan file tidak terlalu besar.");
                     btn.disabled = false;
+                    btn.textContent = 'Daftar via WhatsApp';
                 }
             };
             reader.readAsDataURL(file);
