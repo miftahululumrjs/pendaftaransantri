@@ -3,260 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Santri 2026 - Pondok Pesantren Miftahul Ulum</title>
+    <title>Pendaftaran Santri 2026 - Ponpes Miftahul Ulum</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #075E54; 
-            --secondary-color: #25D366; 
-            --bg-light: #f4f7f6;
-            --text-dark: #333;
-            --border-color: #e0e0e0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        .header-container {
-            background-color: #d1d5db; 
-            text-align: center;
-            width: 100%;
-        }
-
-        .header-image {
-            max-width: 1000px;
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: 20px auto 40px;
-            padding: 40px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        label { font-weight: 600; display: block; margin-top: 20px; font-size: 0.9em; }
-
-        input, select, textarea {
-            width: 100%; padding: 14px; margin-top: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px; box-sizing: border-box;
-            background-color: #fafafa;
-            font-family: inherit;
-        }
-
-        input:focus { border-color: var(--secondary-color); outline: none; background-color: #fff; }
-
-        #preview-container {
-            margin-top: 15px;
-            display: none;
-            text-align: center;
-            border: 2px dashed var(--border-color);
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        #image-preview {
-            max-width: 100%;
-            max-height: 250px;
-            border-radius: 8px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 35px;
-        }
-
-        button {
-            flex: 2;
-            background-color: var(--secondary-color);
-            color: white; border: none; padding: 18px;
-            border-radius: 10px; font-size: 1.1em; font-weight: 700;
-            cursor: pointer; transition: 0.3s;
-        }
-
-        .btn-cancel {
-            flex: 1;
-            background-color: #95a5a6;
-            color: white;
-        }
-
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        .btn-cancel:hover { background-color: #7f8c8d; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        .footer { text-align: center; padding: 40px; font-size: 0.9em; color: #888; }
-        .footer a { color: #555; text-decoration: none; font-weight: 600; }
-        
+        :root { --primary: #075E54; --secondary: #25D366; --bg: #f4f7f6; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); margin: 0; }
+        .header-container { background-color: #d1d5db; text-align: center; }
+        .header-image { max-width: 1000px; width: 100%; height: auto; display: block; margin: 0 auto; }
+        .container { max-width: 700px; margin: 20px auto 40px; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        label { font-weight: 600; display: block; margin-top: 15px; font-size: 0.85em; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        @media (max-width: 600px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .button-group { flex-direction: column; }
-            .container { padding: 25px; margin: 15px; }
-        }
+        .button-group { display: flex; gap: 10px; margin-top: 25px; }
+        button { flex: 2; background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn-cancel { flex: 1; background: #95a5a6; }
+        #preview-container { margin-top: 10px; display: none; text-align: center; border: 1px dashed #ccc; padding: 10px; }
+        #image-preview { max-height: 200px; border-radius: 5px; }
+        @media (max-width: 600px) { .grid-2, .button-group { grid-template-columns: 1fr; flex-direction: column; } }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <img src="header-mu.png" alt="Header Miftahul Ulum" class="header-image">
-    </div>
+<div class="header-container">
+    <img src="header-mu.png" class="header-image">
+</div>
 
-    <div class="container">
-        <h3 style="text-align:center; color:var(--primary-color);">Formulir Pendaftaran 2026</h3>
+<div class="container">
+    <h3 style="text-align:center; color:var(--primary);">Formulir Santri 2026</h3>
+    <form id="pendaftaranForm">
+        <label>Nama Lengkap Calon Santri :</label>
+        <input type="text" id="nama" required>
 
-        <form id="pendaftaranForm">
-            <label>Nama Lengkap Calon Santri:</label>
-            <input type="text" id="nama" placeholder="Sesuai Ijazah SD/MI SMP/MTs" required>
+        <label>Jenis Kelamin :</label>
+        <select id="jk" required>
+            <option value="">-- Pilih --</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+        </select>
 
-            <label>Jenis Kelamin:</label>
-            <select id="jk" required>
-                <option value="">-- Pilih --</option>
-                <option value="Laki-laki">Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
-            </select>
-
-            <div class="grid-2">
-                <div>
-                    <label>NISN:</label>
-                    <input type="number" id="nisn" placeholder="10 Digit NISN" required>
-                </div>
-                <div>
-                    <label>NIK:</label>
-                    <input type="number" id="nik" placeholder="16 Digit NIK" required>
-                </div>
+        <div class="grid-2">
+            <div>
+                <label>NISN :</label>
+                <input type="number" id="nisn" required>
             </div>
-
-            <label>Nomor Kartu Keluarga:</label>
-            <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
-
-            <label>Sekolah Asal:</label>
-            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI SMP/MTs Sebelumnya" required>
-
-            <label>Nomor HP Orang Tua:</label>
-            <input type="number" id="hp_ortu" placeholder="Contoh: 08123xxx" required>
-
-            <label>Upload Foto Calon Santri:</label>
-            <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
-            
-            <div id="preview-container">
-                <p style="font-size: 0.8em; color: #666;">Preview Foto:</p>
-                <img id="image-preview" src="" alt="Preview">
+            <div>
+                <label>NIK :</label>
+                <input type="number" id="nik" required>
             </div>
+        </div>
 
-            <div class="button-group">
-                <button type="button" class="btn-cancel" onclick="resetForm()">BATAL</button>
-                <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
+        <label>Nomor Kartu Keluarga :</label>
+        <input type="number" id="no_kk" required>
+
+        <div class="grid-2">
+            <div>
+                <label>Tempat Lahir :</label>
+                <input type="text" id="tempat" required>
             </div>
-        </form>
-    </div>
+            <div>
+                <label>Tanggal Lahir :</label>
+                <input type="date" id="tgl" required>
+            </div>
+        </div>
 
-    <div class="footer">
-        © 2026 <a href="https://pinggirx.com" target="_blank">pinggirX.com</a>
-    </div>
+        <label>Nama Sekolah Asal (SD/MI, SMP/MTs) :</label>
+        <input type="text" id="sekolah" required>
 
-    <script>
-        const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbzRHzkq19bgDb0jVl6vXsktxUiUw0zHmckkvi-YBkwJq3CtgozlUb8vtam82SGW73mPYQ/exec"; 
-        const adminWA = "6285353365335"; 
+        <label>Alamat Lengkap (RT/RW Desa, Kec, Kab, Kode Pos) :</label>
+        <textarea id="alamat" rows="3" required></textarea>
 
-        function previewImage() {
-            const file = document.getElementById('foto').files[0];
-            const previewContainer = document.getElementById('preview-container');
-            const previewImage = document.getElementById('image-preview');
-            const reader = new FileReader();
+        <label>Nama Ibu Kandung :</label>
+        <input type="text" id="ibu" required>
 
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewContainer.style.display = 'block';
-            }
-            if (file) { reader.readAsDataURL(file); }
+        <label>Nomor HP Orang Tua/Wali :</label>
+        <input type="number" id="hp" required>
+
+        <label>Upload Foto Calon Santri :</label>
+        <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
+        <div id="preview-container"><img id="image-preview"></div>
+
+        <div class="button-group">
+            <button type="button" class="btn-cancel" onclick="resetForm()">BATAL</button>
+            <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbx73lm61nyw3GNGdOVZw0ZCe6nyF6-eDavK4VVn59z47rZ2nEbDKvN-ibu7xDsxm7sdCg/exec"; 
+    const adminWA = "6285353365335"; 
+
+    function previewImage() {
+        const file = document.getElementById('foto').files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => { 
+            document.getElementById('image-preview').src = e.target.result;
+            document.getElementById('preview-container').style.display = 'block';
+        };
+        if (file) reader.readAsDataURL(file);
+    }
+
+    function resetForm() {
+        if(confirm("Hapus semua data?")) {
+            document.getElementById('pendaftaranForm').reset();
+            document.getElementById('preview-container').style.display = 'none';
         }
+    }
 
-        function resetForm() {
-            if(confirm("Apakah Anda yakin ingin membatalkan dan menghapus data?")) {
+    async function kirimData() {
+        const btn = document.getElementById('btnSubmit');
+        const fileInput = document.getElementById('foto');
+        if (!fileInput.files[0]) return alert("Upload foto!");
+
+        btn.textContent = 'Menyimpan...';
+        btn.disabled = true;
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = async function() {
+            const base64Data = reader.result.split(',')[1];
+            const formData = {
+                nama: document.getElementById('nama').value,
+                jk: document.getElementById('jk').value,
+                nisn: document.getElementById('nisn').value,
+                nik: document.getElementById('nik').value,
+                no_kk: document.getElementById('no_kk').value,
+                tempat: document.getElementById('tempat').value,
+                tgl: document.getElementById('tgl').value,
+                sekolah: document.getElementById('sekolah').value,
+                alamat: document.getElementById('alamat').value,
+                ibu: document.getElementById('ibu').value,
+                hp: document.getElementById('hp').value,
+                fotoData: base64Data,
+                fotoType: file.type,
+                fotoName: "Foto_" + document.getElementById('nama').value
+            };
+
+            try {
+                await fetch(URL_SCRIPT_GOOGLE, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(formData) });
+                const pesan = `*Pendaftaran Santri 2026*\nNama: ${formData.nama}\nNIK: ${formData.nik}\nSekolah: ${formData.sekolah}\nData & Foto Berhasil Terkirim.`;
+                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
                 document.getElementById('pendaftaranForm').reset();
                 document.getElementById('preview-container').style.display = 'none';
-                window.scrollTo(0, 0);
-            }
-        }
-
-        async function kirimData() {
-            const btn = document.getElementById('btnSubmit');
-            const fileInput = document.getElementById('foto');
-            const form = document.getElementById('pendaftaranForm');
-            const previewContainer = document.getElementById('preview-container');
-            
-            if (!fileInput.files[0]) {
-                alert("Mohon upload foto calon santri!");
-                return;
-            }
-
-            btn.textContent = 'Sedang Menyimpan...';
-            btn.disabled = true;
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = async function() {
-                const base64Data = reader.result.split(',')[1];
-                const formData = {
-                    nama: document.getElementById('nama').value,
-                    jk: document.getElementById('jk').value,
-                    nisn: document.getElementById('nisn').value,
-                    nik: document.getElementById('nik').value,
-                    no_kk: document.getElementById('no_kk').value,
-                    sekolah: document.getElementById('sekolah_asal').value,
-                    hp: document.getElementById('hp_ortu').value,
-                    fotoData: base64Data,
-                    fotoType: file.type,
-                    fotoName: "Foto_" + document.getElementById('nama').value.replace(/\s+/g, '_')
-                };
-
-                try {
-                    await fetch(URL_SCRIPT_GOOGLE, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams(formData)
-                    });
-
-                    const pesan = `*Pendaftaran Santri 2026*\n*Ponpes Miftahul Ulum*\n\nNama: ${formData.nama}\nNIK: ${formData.nik}\nKK: ${formData.no_kk}\nData & Foto Berhasil Terkirim.`;
-                    
-                    // 1. Buka WhatsApp di tab baru
-                    window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-                    
-                    // 2. Bersihkan isi form dan preview foto
-                    form.reset();
-                    previewContainer.style.display = 'none';
-                    
-                    // 3. Tampilkan pesan sukses dan kembalikan tombol
-                    alert("Pendaftaran Berhasil! Data Anda telah tersimpan. Silakan lanjutkan konfirmasi di WhatsApp yang baru saja terbuka.");
-                    btn.textContent = 'Daftar via WhatsApp';
-                    btn.disabled = false;
-                    
-                    // Opsional: Jika Anda ingin mencoba menutup tab (tidak selalu berhasil di semua browser)
-                    // setTimeout(() => { window.close(); }, 1000);
-
-                } catch (e) {
-                    alert("Terjadi kesalahan. Pastikan file tidak terlalu besar.");
-                    btn.disabled = false;
-                    btn.textContent = 'Daftar via WhatsApp';
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-    </script>
+                alert("Berhasil!");
+            } catch (e) { alert("Error!"); }
+            btn.disabled = false; btn.textContent = 'Daftar via WhatsApp';
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
 </body>
 </html>
