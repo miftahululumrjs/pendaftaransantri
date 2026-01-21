@@ -195,6 +195,8 @@
         async function kirimData() {
             const btn = document.getElementById('btnSubmit');
             const fileInput = document.getElementById('foto');
+            const form = document.getElementById('pendaftaranForm');
+            const previewContainer = document.getElementById('preview-container');
             
             if (!fileInput.files[0]) {
                 alert("Mohon upload foto calon santri!");
@@ -231,12 +233,24 @@
                     });
 
                     const pesan = `*Pendaftaran Santri 2026*\n*Ponpes Miftahul Ulum*\n\nNama: ${formData.nama}\nNIK: ${formData.nik}\nKK: ${formData.no_kk}\nData & Foto Berhasil Terkirim.`;
+                    
+                    // 1. Buka WhatsApp di tab baru
                     window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
                     
+                    // 2. Bersihkan isi form dan preview foto
+                    form.reset();
+                    previewContainer.style.display = 'none';
+                    
+                    // 3. Tampilkan pesan sukses dan kembalikan tombol
+                    alert("Pendaftaran Berhasil! Data Anda telah tersimpan. Silakan lanjutkan konfirmasi di WhatsApp yang baru saja terbuka.");
                     btn.textContent = 'Daftar via WhatsApp';
                     btn.disabled = false;
+                    
+                    // Opsional: Jika Anda ingin mencoba menutup tab (tidak selalu berhasil di semua browser)
+                    // setTimeout(() => { window.close(); }, 1000);
+
                 } catch (e) {
-                    alert("Gagal. Pastikan file tidak terlalu besar.");
+                    alert("Terjadi kesalahan. Pastikan file tidak terlalu besar.");
                     btn.disabled = false;
                     btn.textContent = 'Daftar via WhatsApp';
                 }
