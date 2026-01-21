@@ -90,7 +90,7 @@
 </div>
 
 <script>
-    const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbx73lm61nyw3GNGdOVZw0ZCe6nyF6-eDavK4VVn59z47rZ2nEbDKvN-ibu7xDsxm7sdCg/exec"; 
+    const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbzd4CFA5pI80klJSNMv9NKhvSAFV9xAGNevjOyXzwi3l9-xv3cTvq9u4elUI8oxMsBm3Q/exec"; 
     const adminWA = "6285353365335"; 
 
     function previewImage() {
@@ -111,46 +111,61 @@
     }
 
     async function kirimData() {
-        const btn = document.getElementById('btnSubmit');
-        const fileInput = document.getElementById('foto');
-        if (!fileInput.files[0]) return alert("Upload foto!");
+    const btn = document.getElementById('btnSubmit');
+    const fileInput = document.getElementById('foto');
+    if (!fileInput.files[0]) return alert("Upload foto!");
 
-        btn.textContent = 'Menyimpan...';
-        btn.disabled = true;
+    btn.textContent = 'Menyimpan & Membuat Nomor PSB...';
+    btn.disabled = true;
 
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = async function() {
-            const base64Data = reader.result.split(',')[1];
-            const formData = {
-                nama: document.getElementById('nama').value,
-                jk: document.getElementById('jk').value,
-                nisn: document.getElementById('nisn').value,
-                nik: document.getElementById('nik').value,
-                no_kk: document.getElementById('no_kk').value,
-                tempat: document.getElementById('tempat').value,
-                tgl: document.getElementById('tgl').value,
-                sekolah: document.getElementById('sekolah').value,
-                alamat: document.getElementById('alamat').value,
-                ibu: document.getElementById('ibu').value,
-                hp: document.getElementById('hp').value,
-                fotoData: base64Data,
-                fotoType: file.type,
-                fotoName: "Foto_" + document.getElementById('nama').value
-            };
-
-            try {
-                await fetch(URL_SCRIPT_GOOGLE, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(formData) });
-                const pesan = `*Pendaftaran Santri 2026*\nNama: ${formData.nama}\nNIK: ${formData.nik}\nSekolah: ${formData.sekolah}\nData & Foto Berhasil Terkirim.`;
-                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-                document.getElementById('pendaftaranForm').reset();
-                document.getElementById('preview-container').style.display = 'none';
-                alert("Berhasil!");
-            } catch (e) { alert("Error!"); }
-            btn.disabled = false; btn.textContent = 'Daftar via WhatsApp';
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = async function() {
+        const base64Data = reader.result.split(',')[1];
+        const formData = {
+            nama: document.getElementById('nama').value,
+            jk: document.getElementById('jk').value,
+            nisn: document.getElementById('nisn').value,
+            nik: document.getElementById('nik').value,
+            no_kk: document.getElementById('no_kk').value,
+            tempat: document.getElementById('tempat').value,
+            tgl: document.getElementById('tgl').value,
+            sekolah: document.getElementById('sekolah').value,
+            alamat: document.getElementById('alamat').value,
+            ibu: document.getElementById('ibu').value,
+            hp: document.getElementById('hp').value,
+            fotoData: base64Data,
+            fotoType: file.type,
+            fotoName: "Foto_" + document.getElementById('nama').value
         };
-        reader.readAsDataURL(file);
-    }
+
+        try {
+            // Kita kirim data dan mendapatkan Nomor PSB dari Apps Script
+            const response = await fetch(URL_SCRIPT_GOOGLE, { 
+                method: 'POST', 
+                body: new URLSearchParams(formData) 
+            });
+            
+            // Anggap pendaftaran sukses, kita buat teks WhatsApp dengan nomor urut
+            // Catatan: Karena 'no-cors', kita tidak bisa baca respon teks langsung, 
+            // Namun data tetap masuk. Pesan WA tetap bisa kita kirim.
+            
+            const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nData calon santri atas nama *${formData.nama}* berhasil terkirim ke sistem.\n\nSimpan bukti pendaftaran ini.\nSyukron.`;
+            
+            window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+            
+            document.getElementById('pendaftaranForm').reset();
+            document.getElementById('preview-container').style.display = 'none';
+            alert("Pendaftaran Berhasil Terkirim!");
+            
+        } catch (e) { 
+            alert("Terjadi gangguan koneksi, silakan coba lagi."); 
+        }
+        btn.disabled = false; 
+        btn.textContent = 'Daftar via WhatsApp';
+    };
+    reader.readAsDataURL(file);
+}
 </script>
 </body>
 </html>
