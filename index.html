@@ -15,10 +15,9 @@
         input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .button-group { display: flex; gap: 10px; margin-top: 25px; }
-        button { flex: 2; background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        button { flex: 2; background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-cancel { flex: 1; background: #95a5a6; }
-        #preview-container { margin-top: 10px; display: none; text-align: center; border: 1px dashed #ccc; padding: 10px; }
-        #image-preview { max-height: 200px; border-radius: 5px; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
         @media (max-width: 600px) { .grid-2, .button-group { grid-template-columns: 1fr; flex-direction: column; } }
     </style>
 </head>
@@ -32,7 +31,7 @@
     <h3 style="text-align:center; color:var(--primary);">Formulir Santri 2026</h3>
     <form id="pendaftaranForm">
         <label>Nama Lengkap Calon Santri :</label>
-        <input type="text" id="nama" placeholder="Sesuai Ijazah" required>
+        <input type="text" id="nama" required>
 
         <label>Jenis Kelamin :</label>
         <select id="jk" required>
@@ -42,45 +41,29 @@
         </select>
 
         <div class="grid-2">
-            <div>
-                <label>NISN :</label>
-                <input type="number" id="nisn" placeholder="10 Digit NISN" required>
-            </div>
-            <div>
-                <label>NIK :</label>
-                <input type="number" id="nik" placeholder="16 Digit NIK" required>
-            </div>
+            <div><label>NISN :</label><input type="number" id="nisn" required></div>
+            <div><label>NIK :</label><input type="number" id="nik" required></div>
         </div>
 
         <label>Nomor Kartu Keluarga :</label>
-        <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
+        <input type="number" id="no_kk" required>
 
         <div class="grid-2">
-            <div>
-                <label>Tempat Lahir :</label>
-                <input type="text" id="tempat" placeholder="Sesuai Akta Lahir/Ijazah" required>
-            </div>
-            <div>
-                <label>Tanggal Lahir :</label>
-                <input type="date" id="tgl" required>
-            </div>
+            <div><label>Tempat Lahir :</label><input type="text" id="tempat" required></div>
+            <div><label>Tanggal Lahir :</label><input type="date" id="tgl" required></div>
         </div>
 
         <label>Nama Sekolah Asal (SD/MI, SMP/MTs) :</label>
-        <input type="text" id="sekolah" placeholder="Nama SD/MI SMP/MTs Sebelumnya" required>
+        <input type="text" id="sekolah" required>
 
         <label>Alamat Lengkap (RT/RW Desa, Kec, Kab, Kode Pos) :</label>
         <textarea id="alamat" rows="3" required></textarea>
 
         <label>Nama Ibu Kandung :</label>
-        <input type="text" id="ibu" placeholder="Sesuai Akta Lahir" required>
+        <input type="text" id="ibu" required>
 
         <label>Nomor HP Orang Tua/Wali :</label>
-        <input type="number" id="hp" placeholder="Contoh: 08123xxx" required>
-
-        <label>Upload Foto Calon Santri :</label>
-        <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
-        <div id="preview-container"><img id="image-preview"></div>
+        <input type="number" id="hp" required>
 
         <div class="button-group">
             <button type="button" class="btn-cancel" onclick="resetForm()">BATAL</button>
@@ -92,38 +75,18 @@
 <script>
     const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbz7TDAIhd00FJPn_3ePStQlm2w1E5NzFYOTAztixeGoFiQ4o7j0B3AegJH-T8wFLEJ6aw/exec"; 
     const adminWA = "6285353365335"; 
-
-    function previewImage() {
-        const file = document.getElementById('foto').files[0];
-        const reader = new FileReader();
-        reader.onload = (e) => { 
-            document.getElementById('image-preview').src = e.target.result;
-            document.getElementById('preview-container').style.display = 'block';
-        };
-        if (file) reader.readAsDataURL(file);
-    }
+    // Link Katalog WA Business Anda
+    const linkKatalog = "https://wa.me/c/6285353365335"; 
 
     function resetForm() {
-        if(confirm("Hapus semua data?")) {
-            document.getElementById('pendaftaranForm').reset();
-            document.getElementById('preview-container').style.display = 'none';
-        }
+        if(confirm("Hapus semua data?")) { document.getElementById('pendaftaranForm').reset(); }
     }
 
     async function kirimData() {
-    const btn = document.getElementById('btnSubmit');
-    const fileInput = document.getElementById('foto');
-    if (!fileInput.files[0]) return alert("Mohon upload foto calon santri!");
+        const btn = document.getElementById('btnSubmit');
+        btn.textContent = 'Menyimpan...';
+        btn.disabled = true;
 
-    // Menampilkan loading pada tombol
-    btn.textContent = 'Sedang Menyimpan Data...';
-    btn.disabled = true;
-
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-    
-    reader.onload = async function() {
-        const base64Data = reader.result.split(',')[1];
         const formData = {
             nama: document.getElementById('nama').value,
             jk: document.getElementById('jk').value,
@@ -135,47 +98,26 @@
             sekolah: document.getElementById('sekolah').value,
             alamat: document.getElementById('alamat').value,
             ibu: document.getElementById('ibu').value,
-            hp: document.getElementById('hp').value,
-            fotoData: base64Data,
-            fotoType: file.type,
-            fotoName: "Foto_" + document.getElementById('nama').value.replace(/\s+/g, '_')
+            hp: document.getElementById('hp').value
         };
 
         try {
-            // Menggunakan fetch dengan mode 'no-cors'
-            // Mode ini akan selalu menganggap request "selesai" tanpa membaca isi responnya
-            fetch(URL_SCRIPT_GOOGLE, { 
+            await fetch(URL_SCRIPT_GOOGLE, { 
                 method: 'POST', 
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                mode: 'no-cors', 
                 body: new URLSearchParams(formData) 
             });
 
-            // Memberikan sedikit jeda sebelum membuka WhatsApp agar data sempat terkirim
-            setTimeout(() => {
-                const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nAlhamdulillah, data pendaftaran atas nama *${formData.nama}* telah masuk ke sistem database.\n\nMohon simpan bukti chat ini sebagai tanda bukti pendaftaran.\nSyukron.`;
-                
-                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-                
-                // Membersihkan form setelah berhasil
-                document.getElementById('pendaftaranForm').reset();
-                document.getElementById('preview-container').style.display = 'none';
-                
-                alert("Data berhasil dikirim ke database dan WhatsApp Panitia.");
-                
-                btn.disabled = false; 
-                btn.textContent = 'Daftar via WhatsApp';
-            }, 1500);
-
+            const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nData pendaftaran *${formData.nama}* sudah tersimpan.\n\nKlik link di bawah untuk melihat Katalog Perlengkapan Santri:\n${linkKatalog}`;
+            
+            window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+            document.getElementById('pendaftaranForm').reset();
+            alert("Pendaftaran Berhasil! Silakan cek WhatsApp Anda.");
         } catch (e) { 
-            console.error(e);
-            alert("Terjadi kendala teknis. Pastikan koneksi internet stabil dan ukuran foto tidak terlalu besar."); 
-            btn.disabled = false; 
-            btn.textContent = 'Daftar via WhatsApp';
+            alert("Gangguan koneksi, coba lagi."); 
         }
-    };
-    reader.readAsDataURL(file);
-}
+        btn.disabled = false; btn.textContent = 'Daftar via WhatsApp';
+    }
 </script>
 </body>
 </html>
