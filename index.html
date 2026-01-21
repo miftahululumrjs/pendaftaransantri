@@ -32,7 +32,7 @@
     <h3 style="text-align:center; color:var(--primary);">Formulir Santri 2026</h3>
     <form id="pendaftaranForm">
         <label>Nama Lengkap Calon Santri :</label>
-        <input type="text" id="nama" required>
+        <input type="text" id="nama" placeholder="Sesuai Ijazah" required>
 
         <label>Jenis Kelamin :</label>
         <select id="jk" required>
@@ -44,21 +44,21 @@
         <div class="grid-2">
             <div>
                 <label>NISN :</label>
-                <input type="number" id="nisn" required>
+                <input type="number" id="nisn" placeholder="10 Digit NISN" required>
             </div>
             <div>
                 <label>NIK :</label>
-                <input type="number" id="nik" required>
+                <input type="number" id="nik" placeholder="16 Digit NIK" required>
             </div>
         </div>
 
         <label>Nomor Kartu Keluarga :</label>
-        <input type="number" id="no_kk" required>
+        <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
 
         <div class="grid-2">
             <div>
                 <label>Tempat Lahir :</label>
-                <input type="text" id="tempat" required>
+                <input type="text" id="tempat" placeholder="Sesuai Akta Lahir/Ijazah" required>
             </div>
             <div>
                 <label>Tanggal Lahir :</label>
@@ -67,16 +67,16 @@
         </div>
 
         <label>Nama Sekolah Asal (SD/MI, SMP/MTs) :</label>
-        <input type="text" id="sekolah" required>
+        <input type="text" id="sekolah" placeholder="Nama SD/MI SMP/MTs Sebelumnya" required>
 
         <label>Alamat Lengkap (RT/RW Desa, Kec, Kab, Kode Pos) :</label>
         <textarea id="alamat" rows="3" required></textarea>
 
         <label>Nama Ibu Kandung :</label>
-        <input type="text" id="ibu" required>
+        <input type="text" id="ibu" placeholder="Sesuai Akta Lahir" required>
 
         <label>Nomor HP Orang Tua/Wali :</label>
-        <input type="number" id="hp" required>
+        <input type="number" id="hp" placeholder="Contoh: 08123xxx" required>
 
         <label>Upload Foto Calon Santri :</label>
         <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
