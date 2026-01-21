@@ -22,37 +22,23 @@
             color: var(--text-dark);
         }
 
-        /* Header dengan Background Image */
-        .header-image {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            display: block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-container {
-            background-color: #d1d5db; /* Menyesuaikan warna abu-abu pada header Anda */
-            width: 100%;
-            padding: 0;
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 20px;
             text-align: center;
         }
 
+        .header h1 { margin: 0; font-size: 2em; text-transform: uppercase; }
+        .header p { margin-top: 10px; opacity: 0.9; }
+
         .container {
             max-width: 700px;
-            margin: 30px auto 40px;
+            margin: -40px auto 40px;
             padding: 40px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        .section-title {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-weight: 700;
-            text-transform: uppercase;
         }
 
         label { font-weight: 600; display: block; margin-top: 20px; font-size: 0.9em; }
@@ -98,7 +84,6 @@
 
         @media (max-width: 600px) {
             .grid-2 { grid-template-columns: 1fr; }
-            .container { padding: 20px; margin: 15px; }
         }
     </style>
 </head>
@@ -109,11 +94,11 @@
     </div>
 
     <div class="container">
-        <h2 class="section-title">Formulir Pendaftaran Santri 2026</h2>
+        <h3 style="text-align:center; color:var(--primary-color);">Formulir Pendaftaran 2026</h3>
 
         <form id="pendaftaranForm">
             <label>Nama Lengkap Calon Santri:</label>
-            <input type="text" id="nama" placeholder="Sesuai Ijazah" required>
+            <input type="text" id="nama" placeholder="Sesuai Akta" required>
 
             <label>Jenis Kelamin:</label>
             <select id="jk" required>
@@ -125,24 +110,24 @@
             <div class="grid-2">
                 <div>
                     <label>NISN:</label>
-                    <input type="number" id="nisn" placeholder="10 Digit" required>
+                    <input type="number" id="nisn" placeholder="10 Digit NISN" required>
                 </div>
                 <div>
                     <label>NIK:</label>
-                    <input type="number" id="nik" placeholder="16 Digit" required>
+                    <input type="number" id="nik" placeholder="16 Digit NIK" required>
                 </div>
             </div>
 
-            <label>Nomor Kartu Keluarga (KK):</label>
+            <label>Nomor Kartu Keluarga:</label>
             <input type="number" id="no_kk" placeholder="16 Digit Nomor KK" required>
 
             <label>Sekolah Asal:</label>
-            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI SMP/MTs Sebelumnya" required>
+            <input type="text" id="sekolah_asal" placeholder="Nama SD/MI Sebelumnya" required>
 
-            <label>Nomor HP Orang Tua (WhatsApp):</label>
-            <input type="number" id="hp_ortu" placeholder="Contoh: 08123456789" required>
+            <label>Nomor HP Orang Tua:</label>
+            <input type="number" id="hp_ortu" placeholder="Contoh: 08123xxx" required>
 
-            <label>Upload Foto Calon Santri (Terbaru):</label>
+            <label>Upload Foto Calon Santri:</label>
             <input type="file" id="foto" accept="image/*" onchange="previewImage()" required>
             
             <div id="preview-container">
@@ -150,7 +135,7 @@
                 <img id="image-preview" src="" alt="Preview">
             </div>
 
-            <button type="button" id="btnSubmit" onclick="kirimData()">Kirim Pendaftaran via WhatsApp</button>
+            <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
         </form>
     </div>
 
@@ -159,9 +144,8 @@
     </div>
 
     <script>
-        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
         const URL_SCRIPT_GOOGLE = "https://script.google.com/macros/s/AKfycbzT6jYF6gv8iu2n_05HuJtSWG8T3dAsOgp4_CKV-294wSe8ICmoO6NYNXMxF3nYp_dq2A/exec"; 
-        const adminWA = "6285353365335"; // Ganti dengan nomor WhatsApp Admin/Panitia
+        const adminWA = "6285353365335"; 
 
         function previewImage() {
             const file = document.getElementById('foto').files[0];
@@ -181,19 +165,11 @@
             const fileInput = document.getElementById('foto');
             
             if (!fileInput.files[0]) {
-                alert("Mohon sertakan foto calon santri!");
+                alert("Mohon upload foto calon santri!");
                 return;
             }
 
-            // Validasi sederhana untuk NIK & KK
-            const nikValue = document.getElementById('nik').value;
-            const kkValue = document.getElementById('no_kk').value;
-            if(nikValue.length !== 16 || kkValue.length !== 16) {
-                alert("NIK dan Nomor KK harus 16 digit!");
-                return;
-            }
-
-            btn.textContent = 'Sedang Menyimpan Data...';
+            btn.textContent = 'Sedang Menyimpan...';
             btn.disabled = true;
 
             const file = fileInput.files[0];
@@ -205,42 +181,31 @@
                     nama: document.getElementById('nama').value,
                     jk: document.getElementById('jk').value,
                     nisn: document.getElementById('nisn').value,
-                    nik: nikValue,
-                    no_kk: kkValue,
+                    nik: document.getElementById('nik').value,
+                    no_kk: document.getElementById('no_kk').value, // Data KK ditambahkan
                     sekolah: document.getElementById('sekolah_asal').value,
                     hp: document.getElementById('hp_ortu').value,
                     fotoData: base64Data,
                     fotoType: file.type,
-                    fotoName: "FOTO_SANTRI_" + document.getElementById('nama').value.replace(/\s+/g, '_')
+                    fotoName: "Foto_" + document.getElementById('nama').value
                 };
 
                 try {
-                    // 1. Simpan ke Google Sheets & Drive
-                    await fetch(https://script.google.com/macros/s/AKfycbzT6jYF6gv8iu2n_05HuJtSWG8T3dAsOgp4_CKV-294wSe8ICmoO6NYNXMxF3nYp_dq2A/exec, {
+                    await fetch(URL_SCRIPT_GOOGLE, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: new URLSearchParams(formData)
                     });
 
-                    // 2. Redirect ke WhatsApp
-                    const pesan = `*PENDAFTARAN SANTRI BARU 2026*\n*PONPES MIFTAHUL ULUM*\n\n` +
-                                  `Nama: ${formData.nama}\n` +
-                                  `NIK: ${formData.nik}\n` +
-                                  `Asal Sekolah: ${formData.sekolah}\n\n` +
-                                  `_Data pendaftaran dan foto sudah berhasil diupload ke sistem sekolah._`;
-
-                    window.open(`https://wa.me/${6285353365335}?text=${encodeURIComponent(pesan)}`, '_blank');
+                    const pesan = `*Pendaftaran Santri 2026*\n*Ponpes Miftahul Ulum*\n\nNama: ${formData.nama}\nNIK: ${formData.nik}\nKK: ${formData.no_kk}\nData & Foto Berhasil Terkirim.`;
+                    window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
                     
-                    btn.textContent = 'Kirim Pendaftaran via WhatsApp';
+                    btn.textContent = 'Daftar via WhatsApp';
                     btn.disabled = false;
-                    document.getElementById('pendaftaranForm').reset();
-                    document.getElementById('preview-container').style.display = 'none';
-                    
                 } catch (e) {
-                    alert("Terjadi kesalahan teknis. Pastikan ukuran foto tidak terlalu besar.");
+                    alert("Terjadi kesalahan. Pastikan file tidak terlalu besar.");
                     btn.disabled = false;
-                    btn.textContent = 'Kirim Pendaftaran via WhatsApp';
                 }
             };
             reader.readAsDataURL(file);
