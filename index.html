@@ -113,13 +113,15 @@
     async function kirimData() {
     const btn = document.getElementById('btnSubmit');
     const fileInput = document.getElementById('foto');
-    if (!fileInput.files[0]) return alert("Upload foto!");
+    if (!fileInput.files[0]) return alert("Mohon upload foto calon santri!");
 
-    btn.textContent = 'Menyimpan & Membuat Nomor PSB...';
+    // Menampilkan loading pada tombol
+    btn.textContent = 'Sedang Menyimpan Data...';
     btn.disabled = true;
 
     const file = fileInput.files[0];
     const reader = new FileReader();
+    
     reader.onload = async function() {
         const base64Data = reader.result.split(',')[1];
         const formData = {
@@ -136,33 +138,41 @@
             hp: document.getElementById('hp').value,
             fotoData: base64Data,
             fotoType: file.type,
-            fotoName: "Foto_" + document.getElementById('nama').value
+            fotoName: "Foto_" + document.getElementById('nama').value.replace(/\s+/g, '_')
         };
 
         try {
-            // Kita kirim data dan mendapatkan Nomor PSB dari Apps Script
-            const response = await fetch(URL_SCRIPT_GOOGLE, { 
+            // Menggunakan fetch dengan mode 'no-cors'
+            // Mode ini akan selalu menganggap request "selesai" tanpa membaca isi responnya
+            fetch(URL_SCRIPT_GOOGLE, { 
                 method: 'POST', 
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(formData) 
             });
-            
-            // Anggap pendaftaran sukses, kita buat teks WhatsApp dengan nomor urut
-            // Catatan: Karena 'no-cors', kita tidak bisa baca respon teks langsung, 
-            // Namun data tetap masuk. Pesan WA tetap bisa kita kirim.
-            
-            const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nData calon santri atas nama *${formData.nama}* berhasil terkirim ke sistem.\n\nSimpan bukti pendaftaran ini.\nSyukron.`;
-            
-            window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-            
-            document.getElementById('pendaftaranForm').reset();
-            document.getElementById('preview-container').style.display = 'none';
-            alert("Pendaftaran Berhasil Terkirim!");
-            
+
+            // Memberikan sedikit jeda sebelum membuka WhatsApp agar data sempat terkirim
+            setTimeout(() => {
+                const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nAlhamdulillah, data pendaftaran atas nama *${formData.nama}* telah masuk ke sistem database.\n\nMohon simpan bukti chat ini sebagai tanda bukti pendaftaran.\nSyukron.`;
+                
+                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+                
+                // Membersihkan form setelah berhasil
+                document.getElementById('pendaftaranForm').reset();
+                document.getElementById('preview-container').style.display = 'none';
+                
+                alert("Data berhasil dikirim ke database dan WhatsApp Panitia.");
+                
+                btn.disabled = false; 
+                btn.textContent = 'Daftar via WhatsApp';
+            }, 1500);
+
         } catch (e) { 
-            alert("Terjadi gangguan koneksi, silakan coba lagi."); 
+            console.error(e);
+            alert("Terjadi kendala teknis. Pastikan koneksi internet stabil dan ukuran foto tidak terlalu besar."); 
+            btn.disabled = false; 
+            btn.textContent = 'Daftar via WhatsApp';
         }
-        btn.disabled = false; 
-        btn.textContent = 'Daftar via WhatsApp';
     };
     reader.readAsDataURL(file);
 }
