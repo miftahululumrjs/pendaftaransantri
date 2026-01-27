@@ -65,6 +65,13 @@
         <label>Nomor HP Orang Tua/Wali :</label>
         <input type="number" id="hp" placeholder="Contoh: 08123xxx" required>
 
+        <label>Pilihan Program Pesantren :</label>
+        <select id="pilihan_pesantren" required>
+            <option value="">-- Pilih Program --</option>
+            <option value="Diniyyah dan SMP/SMA">1. Diniyyah dan SMP/SMA</option>
+            <option value="Tahfidz dan SMP/SMA">2. Tahfidz dan SMP/SMA</option>
+        </select>
+
         <div class="button-group">
             <button type="button" class="btn-cancel" onclick="resetForm()">BATAL</button>
             <button type="button" id="btnSubmit" onclick="kirimData()">Daftar via WhatsApp</button>
@@ -83,41 +90,52 @@
     }
 
     async function kirimData() {
-        const btn = document.getElementById('btnSubmit');
-        btn.textContent = 'Menyimpan...';
-        btn.disabled = true;
+    const btn = document.getElementById('btnSubmit');
+    btn.textContent = 'Menyimpan...';
+    btn.disabled = true;
 
-        const formData = {
-            nama: document.getElementById('nama').value,
-            jk: document.getElementById('jk').value,
-            nisn: document.getElementById('nisn').value,
-            nik: document.getElementById('nik').value,
-            no_kk: document.getElementById('no_kk').value,
-            tempat: document.getElementById('tempat').value,
-            tgl: document.getElementById('tgl').value,
-            sekolah: document.getElementById('sekolah').value,
-            alamat: document.getElementById('alamat').value,
-            ibu: document.getElementById('ibu').value,
-            hp: document.getElementById('hp').value
-        };
+    const formData = {
+        nama: document.getElementById('nama').value,
+        jk: document.getElementById('jk').value,
+        nisn: document.getElementById('nisn').value,
+        nik: document.getElementById('nik').value,
+        no_kk: document.getElementById('no_kk').value,
+        tempat: document.getElementById('tempat').value,
+        tgl: document.getElementById('tgl').value,
+        sekolah: document.getElementById('sekolah').value,
+        alamat: document.getElementById('alamat').value,
+        ibu: document.getElementById('ibu').value,
+        hp: document.getElementById('hp').value,
+        pilihan: document.getElementById('pilihan_pesantren').value // Data baru
+    };
 
-        try {
-            await fetch(URL_SCRIPT_GOOGLE, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: new URLSearchParams(formData) 
-            });
+    try {
+        await fetch(URL_SCRIPT_GOOGLE, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: new URLSearchParams(formData) 
+        });
 
-            const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\nData pendaftaran *${formData.nama}* sudah tersimpan.\n\nKlik link di bawah untuk melihat Katalog Perlengkapan Santri:\n${linkKatalog}`;
-            
-            window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
-            document.getElementById('pendaftaranForm').reset();
-            alert("Pendaftaran Berhasil! Silakan cek WhatsApp Anda.");
-        } catch (e) { 
-            alert("Gangguan koneksi, coba lagi."); 
-        }
-        btn.disabled = false; btn.textContent = 'Daftar via WhatsApp';
+        // Format Pesan Baru: Ajakan Transfer & Info Akses Web
+        const pesan = `*PENDAFTARAN SANTRI 2026*\n*Ponpes Miftahul Ulum*\n\n` +
+                      `Data pendaftaran *${formData.nama}* telah tersimpan di sistem kami.\n\n` +
+                      `*LANGKAH SELANJUTNYA:*\n` +
+                      `1. Transfer Biaya Pendaftaran Rp 200.000 ke:\n` +
+                      `   *Bank BRI: xxxxxxxxxx*\n` +
+                      `   *a.n. Ahmad*\n` +
+                      `2. Kirim bukti transfer ke nomor ini.\n\n` +
+                      `Setelah diverifikasi, Anda dapat login untuk melengkapi berkas di:\n` +
+                      `https://psb.miftahululumrjs.com\n\n` +
+                      `Gunakan NISN sebagai username Anda.`;
+        
+        window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+        document.getElementById('pendaftaranForm').reset();
+        alert("Pendaftaran Berhasil! Silakan cek WhatsApp Anda untuk instruksi pembayaran.");
+    } catch (e) { 
+        alert("Gangguan koneksi, coba lagi."); 
     }
+    btn.disabled = false; btn.textContent = 'Daftar via WhatsApp';
+}
 </script>
 </body>
 </html>
